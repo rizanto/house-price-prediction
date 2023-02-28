@@ -20,7 +20,7 @@ def houseprice(input_data):
     input_data_reshaped = input_data_as_numpy_array.reshape(1,-1)
     prediction = loaded_model.predict(input_data_reshaped)
     print(prediction)
-    return f"The price will be around ${round(prediction[0],2)}" 
+    return f"The price will be around IDR {round(prediction[0],2)*1000000}" 
     
   
 def main():
