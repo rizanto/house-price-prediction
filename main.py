@@ -7,7 +7,7 @@ from PIL import Image
 
 
 # loading the saved model
-loaded_model = pickle.load(open("./web-app/model/housepricemodel.sav", 'rb'))
+loaded_model = pickle.load(open("./model/housepricemodel.sav", 'rb'))
 
 
 # creating a function for Prediction
@@ -28,7 +28,7 @@ def main():
     st.set_page_config(layout='wide', page_title="House Price Prediction", page_icon="😘🤣")
 
     # giving a title
-    header = Image.open('./web-app/images/header3.png')
+    header = Image.open('./images/header3.png')
   
     st.image(header)
     st.title('House Price Prediction')
