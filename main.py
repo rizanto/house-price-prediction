@@ -33,7 +33,7 @@ def houseprice(input_data):
     prediction = loaded_model.predict(input_data_reshaped)
     prediction = round(float(prediction[0])*1_000_000, 0)
     prediction = currency(prediction)
-    return f"Harganya INSYAALLAH sekitar {prediction}" 
+    return f"Harganya INSYAALLAH sekitar {prediction} \nMahal kan? Makanya Ayo Nabung...\nKurangi checkout barang-barang lucu yang tidak berguna :)" 
 
     
   
