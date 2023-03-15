@@ -26,20 +26,19 @@ def currency(price):
 def houseprice(input_data):
     # changing the input_data to numpy array
     input_data_as_numpy_array = np.asarray(input_data)
-    # print(input_data_as_numpy_array)
 
     # reshape the array as we are predicting for one instance
     input_data_reshaped = input_data_as_numpy_array.reshape(1,-1)
     prediction = loaded_model.predict(input_data_reshaped)
     prediction = round(float(prediction[0])*1_000_000, 0)
     prediction = currency(prediction)
-    return f"Harganya INSYAALLAH sekitar {prediction} \nMahal kan? Makanya Ayo Nabung...\nKurangi checkout barang-barang lucu yang tidak berguna :)" 
+    return f"Harganya INSYAALLAH sekitar {prediction} \n\nMahal kan? Makanya Ayo Nabung...\n\nKurangi checkout barang-barang lucu yang tidak berguna :)" 
 
     
   
 def main():
     
-    st.set_page_config(layout='centered', page_title="House Price Prediction", page_icon="🤣")
+    st.set_page_config(layout='centered', page_title="House Price Prediction", page_icon="🤍")
 
     # giving a title
     header = Image.open('./images/header.jpg')
