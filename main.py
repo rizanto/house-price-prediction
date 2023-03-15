@@ -3,46 +3,52 @@ import pandas as pd
 import pickle
 import streamlit as st
 from PIL import Image
+import xgboost
 
 
 
 # loading the saved model
 loaded_model = pickle.load(open("./model/housepricemodel.sav", 'rb'))
 
+# function for currency formatting
+def currency(price):
+    seperator_of_thousand = "."
+    seperator_of_fraction = ","
+    my_currency = "Rp {:,.2f}".format(price)
+    if seperator_of_thousand == ".":
+        main_currency, fractional_currency = my_currency.split(".")[0], my_currency.split(".")[1]
+        new_main_currency = main_currency.replace(",", ".")
+        currency = new_main_currency + seperator_of_fraction + fractional_currency
+    return(currency)
+
 
 # creating a function for Prediction
-
 def houseprice(input_data):
     # changing the input_data to numpy array
     input_data_as_numpy_array = np.asarray(input_data)
+    # print(input_data_as_numpy_array)
 
     # reshape the array as we are predicting for one instance
     input_data_reshaped = input_data_as_numpy_array.reshape(1,-1)
     prediction = loaded_model.predict(input_data_reshaped)
-    print(prediction)
-    return f"The price will be around IDR {round(prediction[0],2)*1000000}" 
+    prediction = round(float(prediction[0])*1_000_000, 0)
+    prediction = currency(prediction)
+    return f"Harganya INSYAALLAH sekitar {prediction}" 
+
     
   
 def main():
     
-    st.set_page_config(layout='wide', page_title="House Price Prediction", page_icon="😘🤣")
+    st.set_page_config(layout='centered', page_title="House Price Prediction", page_icon="🤣")
 
     # giving a title
-    header = Image.open('./images/header3.png')
+    header = Image.open('./images/header.jpg')
   
     st.image(header)
     st.title('House Price Prediction')
     
     # getting the input data from the user
-    bedrooms = st.slider('bedrooms', min_value=1, max_value=9,value=2,step=1)
-    bathrooms = st.slider('bathrooms', min_value=1, max_value=9,value=2,step=1)
-    land_size_m2 = st.text_input('land_size_m2', 0)
-    building_size_m2 = st.text_input('building_size_m2', 0)
-    carports = st.slider('carports', min_value=1, max_value=15,value=2,step=1)
-    electricity = st.text_input('electricity', 0)
-    floors = st.slider('floors', min_value=1, max_value=5,value=2,step=1)
-    garages = st.slider('garages', min_value=1, max_value=15,value=2,step=1)
-    city = st.selectbox('city', (
+    city = st.selectbox('CITY', (
       'Bekasi',
       'Bogor',
       'Depok',
@@ -53,6 +59,14 @@ def main():
       'Jakarta Utara',
       'Tangerang'
     ))
+    land_size_m2 = st.text_input('LAND SIZE M2', 20)
+    building_size_m2 = st.text_input('BUILDING SIZE M2', 20)
+    floors = st.slider('FLOORS', min_value=1, max_value=4, value=1, step=1)
+    bedrooms = st.slider('BEDROOMS', min_value=1, max_value=9, value=2, step=1)
+    bathrooms = st.slider('BATHROOMS', min_value=1, max_value=9, value=2, step=1)
+    electricity = st.text_input('ELECTRICITY', 900)
+    carports = st.selectbox('CARPORTS', ('Yes','No'))
+    garages = st.selectbox('GARAGES', ('Yes','No'))
 
 
 
@@ -71,7 +85,7 @@ def main():
 
     
     # code for Prediction
-    price = 'In Data We Believe...'
+    price = f'Baca Bismillah Dulu... \n\n -Ubed 2023'
     
     # transforming data
 
@@ -102,6 +116,17 @@ def main():
       city_Jakarta_Utara = 1
     elif city == "Tangerang":
       city_Tangerang = 1
+
+    
+    if carports == 'Yes':
+       carports = 1
+    else:
+       carports = 0
+
+    if garages == 'Yes':
+       garages = 1
+    else:
+       garages = 0
 
     # creating a button for Prediction
     
